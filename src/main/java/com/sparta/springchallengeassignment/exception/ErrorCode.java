@@ -14,6 +14,7 @@ public enum ErrorCode {
     /* 400 BAD_REQUEST : 잘못된 요청*/
     INVALID_VALUE(BAD_REQUEST, "값이 유효하지 않습니다."),
     INVALID_PASSWORD_CONFIRM(BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
+    PASSWORD_CONTAINS_NICKNAME(BAD_REQUEST, "비밀번호는 닉네임을 포함할 수 없습니다."),
     INVALID_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰이 유효하지 않습니다."),
     MISMATCH_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰의 유저 정보가 일치하지 않습니다."),
 
