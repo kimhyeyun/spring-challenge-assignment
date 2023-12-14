@@ -1,4 +1,4 @@
-package com.sparta.springchallengeassignment.service;
+package com.sparta.springchallengeassignment.exception;
 
 import com.sparta.springchallengeassignment.exception.ApiException;
 import com.sparta.springchallengeassignment.exception.ErrorCode;

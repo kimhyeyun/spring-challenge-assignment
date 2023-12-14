@@ -23,6 +23,7 @@ public record SignupRequest (
         @Schema(description = "이메일", example = "test@email.com")
         @Email
         String email
+
 ) {
 
 }
