@@ -5,7 +5,6 @@ import com.sparta.springchallengeassignment.dto.request.SignupRequest;
 import com.sparta.springchallengeassignment.exception.*;
 import com.sparta.springchallengeassignment.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +25,6 @@ public class MemberService {
         String password = request.password();
         String confirmPassword = request.confirm_password();
 
-        if (memberRepository.existsByNickname(nickname)) {
-            throw new AlreadyExistedNickname();
-        }
-
-        if (memberRepository.existsByEmail(email)) {
-            throw new AlreadyExistedEmail();
-        }
 
         if (password.contains(nickname)) {
             throw new InvalidPassword();
@@ -42,14 +34,25 @@ public class MemberService {
             throw new InvalidPasswordConfirmation();
         }
 
-        
         Member member = Member.builder()
                 .nickname(nickname)
                 .password(passwordEncoder.encode(password))
                 .email(email)
                 .build();
 
+
         memberRepository.save(member);
     }
 
+    public void checkNickname(String nickname) {
+        if (memberRepository.existsByNickname(nickname)) {
+            throw new AlreadyExistedNickname();
+        }
+    }
+
+    public void checkEmail(String email) {
+        if (memberRepository.existsByEmail(email)) {
+            throw new AlreadyExistedEmail();
+        }
+    }
 }

@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "회원 API", description = "회원 API 컨트롤러")
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+
 
     @Operation(summary = "회원 가입", description = "회원 가입 API")
     @ApiResponses(value = {
@@ -44,10 +46,24 @@ public class MemberController {
             )
     })
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signup(@RequestBody @Valid SignupRequest request) {
+    public ResponseEntity<SignupResponse> signup(@Valid SignupRequest request) {
         memberService.signup(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(SignupResponse.of("회원가입에 성공했습니다."));
+
     }
 
+    @PostMapping("/{nickname}")
+    public ResponseEntity<?> checkNickname(@PathVariable String nickname) {
+        memberService.checkNickname(nickname);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("사용 가능한 닉네임입니다.");
+    }
+
+    @PostMapping("/{email}")
+    public ResponseEntity<?> checkEmail(@PathVariable String email) {
+        memberService.checkEmail(email);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("사용 가능한 이메일입니다.");
+    }
 }
