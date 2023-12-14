@@ -5,6 +5,7 @@ import com.sparta.springchallengeassignment.dto.request.SignupRequest;
 import com.sparta.springchallengeassignment.exception.*;
 import com.sparta.springchallengeassignment.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     @Transactional
     public void signup(SignupRequest request) {
@@ -40,6 +42,7 @@ public class MemberService {
             throw new InvalidPasswordConfirmation();
         }
 
+        
         Member member = Member.builder()
                 .nickname(nickname)
                 .password(passwordEncoder.encode(password))
@@ -48,4 +51,5 @@ public class MemberService {
 
         memberRepository.save(member);
     }
+
 }
