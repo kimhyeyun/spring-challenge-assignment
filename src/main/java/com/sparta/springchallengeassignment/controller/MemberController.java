@@ -44,7 +44,7 @@ public class MemberController {
             )
     })
     @PostMapping("/sign-up")
-    public ResponseEntity<SignupResponse> signup(@Valid SignupRequest request) {
+    public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequest request) {
         memberService.signup(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(SignupResponse.of("회원가입에 성공했습니다."));
