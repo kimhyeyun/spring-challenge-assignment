@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -48,5 +49,11 @@ public class RedisUtil {
 
     public void deleteKey(String key) {
         redisTemplate.opsForValue().getOperations().delete(key);
+    }
+
+    public void setDataExpire(String value, String key, long duration) {
+        Duration expireDuration = Duration.ofSeconds(duration);
+        redisTemplate.opsForValue().set(key, value, expireDuration);
+
     }
 }

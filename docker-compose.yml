@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  challenge-redis:
+    container_name: challenge-redis
+    image: redis:latest
+    hostname: localhost
+    ports:
+      - "6379:6379"

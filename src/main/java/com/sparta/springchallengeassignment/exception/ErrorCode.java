@@ -17,6 +17,8 @@ public enum ErrorCode {
     PASSWORD_CONTAINS_NICKNAME(BAD_REQUEST, "비밀번호는 닉네임을 포함할 수 없습니다."),
     INVALID_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰이 유효하지 않습니다."),
     MISMATCH_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰의 유저 정보가 일치하지 않습니다."),
+    INVALID_EMAIL_VERIFY_AUTH_KEY(BAD_REQUEST, "이메일 인증 번호가 일치하지 않습니다."),
+    TIME_OUT_EMAIL_VERIFY(BAD_REQUEST, "이메일 인증 시간이 초과했습니다."),
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자*/
     INVALID_AUTH_TOKEN(UNAUTHORIZED,"인증 정보가 없는 토큰입니다."),
