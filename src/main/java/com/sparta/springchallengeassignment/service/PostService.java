@@ -102,4 +102,14 @@ public class PostService {
 
         return posts.stream().map(PostResponse::of).toList();
     }
+
+    public List<Post> getPosts() {
+        return postRepository.findAll();
+    }
+
+    @Transactional
+    public void delete(Post post) {
+        postImageService.deleteAll(post.getId());
+        postRepository.deleteById(post.getId());
+    }
 }
