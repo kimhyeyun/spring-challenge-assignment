@@ -1,7 +1,7 @@
 package com.sparta.springchallengeassignment.controller;
 
 import com.sparta.springchallengeassignment.dto.request.SignupRequest;
-import com.sparta.springchallengeassignment.dto.response.ErrorResponse;
+import com.sparta.springchallengeassignment.dto.response.BaseResponse;
 import com.sparta.springchallengeassignment.dto.response.SignupResponse;
 import com.sparta.springchallengeassignment.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,12 +35,12 @@ public class MemberController {
             @ApiResponse(
                     responseCode = "409",
                     description = "회원 가입 실패 - 이미 존재하는 닉네임, 이메일인 경우",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "회원 가입 실패 - 비밀번호 입력이 일치하지 않는 경우",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))
             )
     })
     @PostMapping("/sign-up")

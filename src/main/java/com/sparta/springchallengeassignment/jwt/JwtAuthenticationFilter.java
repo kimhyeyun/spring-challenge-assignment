@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sparta.springchallengeassignment.dto.TokenDto;
 import com.sparta.springchallengeassignment.dto.request.LoginRequest;
-import com.sparta.springchallengeassignment.dto.response.ErrorResponse;
+import com.sparta.springchallengeassignment.dto.response.BaseResponse;
 import com.sparta.springchallengeassignment.dto.response.LoginResponse;
 import com.sparta.springchallengeassignment.security.UserDetailsImpl;
 import com.sparta.springchallengeassignment.util.RedisUtil;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 
-import static com.sparta.springchallengeassignment.exception.ErrorCode.UNAUTHORIZED_MEMBER;
+import static com.sparta.springchallengeassignment.constant.ErrorCode.UNAUTHORIZED_MEMBER;
 
 @Slf4j(topic = "로그인 및 JWT 생성")
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -90,11 +90,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .registerModule(new JavaTimeModule())
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .writeValue(response.getWriter(),
-                        ErrorResponse.builder()
-                                .status(UNAUTHORIZED_MEMBER.getHttpStatus().value())
-                                .name(UNAUTHORIZED_MEMBER.name())
-                                .message(UNAUTHORIZED_MEMBER.getDetail())
-                                .build()
-                );
+                        BaseResponse.of(
+                                UNAUTHORIZED_MEMBER.getDetail(),
+                                UNAUTHORIZED_MEMBER.getHttpStatus().value(),
+                                null
+                        ));
     }
 }

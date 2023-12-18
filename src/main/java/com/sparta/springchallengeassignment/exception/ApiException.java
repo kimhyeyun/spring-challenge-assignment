@@ -1,5 +1,6 @@
 package com.sparta.springchallengeassignment.exception;
 
+import com.sparta.springchallengeassignment.constant.ErrorCode;
 import lombok.Getter;
 
 @Getter
