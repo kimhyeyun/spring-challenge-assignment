@@ -79,4 +79,17 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BaseResponse.of(UPDATE_POST, response));
     }
+
+    @Operation(summary = "게시글 삭제", description = "게시글 삭제 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "게시글 삭제 성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "403", description = "게시글 삭제 실패 - 권한 없음", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "게시글 삭제 실패 - 존재하지 않는 게시글", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "400", description = "게시글 삭제 실패 - 작성자가 아닌 사용자가 삭제 시도", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+    })
+    @DeleteMapping("/{post_id}")
+    public ResponseEntity<?> deletePost(@PathVariable Long post_id, @CurrentMember Member member) {
+        postService.deletePost(post_id, member);
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.of(DELETE_POST, ""));
+    }
 }

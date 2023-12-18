@@ -10,6 +10,7 @@ import com.sparta.springchallengeassignment.exception.ApiException;
 import com.sparta.springchallengeassignment.repository.MemberRepository;
 import com.sparta.springchallengeassignment.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,5 +76,16 @@ public class PostService {
         }
 
         return PostResponse.of(post);
+    }
+
+    @Transactional
+    public void deletePost(Long postId, Member member) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ApiException(POST_NOT_FOUND));
+        if (!post.getMember().getId().equals(member.getId())) {
+            throw new ApiException(ACCESS_DENIED);
+        }
+
+        postImageService.deleteAll(postId);
+        postRepository.deleteById(postId);
     }
 }

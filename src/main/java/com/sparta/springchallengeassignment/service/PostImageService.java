@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +46,11 @@ public class PostImageService {
                 break;
             }
         }
+    }
+
+    public void deleteAll(Long postId) {
+        s3Service.deleteAllPostFiles(postId.toString());
+        List<PostImage> postImages = postImageRepository.findAllByPostId(postId);
+        postImageRepository.deleteAll(postImages);
     }
 }
