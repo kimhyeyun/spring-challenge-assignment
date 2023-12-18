@@ -1,5 +1,6 @@
 package com.sparta.springchallengeassignment.domain;
 
+import com.sparta.springchallengeassignment.dto.request.PostUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,4 +31,8 @@ public class Post extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "nickname")
     private Member member;
+
+    public void update(PostUpdateRequest request) {
+        this.content = request.getContent();
+    }
 }

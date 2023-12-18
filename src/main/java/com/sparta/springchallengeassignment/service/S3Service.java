@@ -33,32 +33,30 @@ public class S3Service {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public String uploadMultipartFileWithPublicRead(String prefix, MultipartFile multipartFile) throws IOException {
+    @Transactional
+    public String saveImages(String prefix, MultipartFile multipartFile) throws IOException {
         String fileName = multipartFile.getOriginalFilename();
         String fileNameExtension = StringUtils.getFilenameExtension(fileName);
 
         fileName = prefix + UUID.randomUUID() + "." + fileNameExtension;
-        String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(multipartFile.getContentType());
-        metadata.setContentLength(multipartFile.getSize());
+        metadata.setContentLength(multipartFile.getInputStream().available());
 
-        PutObjectRequest request = new PutObjectRequest(
-                bucket, fileName, multipartFile.getInputStream(), metadata
-        )
-                .withCannedAcl(CannedAccessControlList.PublicRead);
+        amazonS3Client.putObject(bucket, fileName, multipartFile.getInputStream(), metadata);
 
-        return fileUrl;
+        String accessUrl = amazonS3Client.getUrl(bucket, fileName).toString();
+
+        return accessUrl;
     }
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional
     public void deletePostFile(String fileUrl) {
         amazonS3Client.deleteObject(bucket, extractKey(fileUrl));
     }
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional
     public void deleteAllPostFiles(String postId) {
         ListObjectsRequest request = new ListObjectsRequest()
                 .withBucketName(bucket)

@@ -22,16 +22,28 @@ public class PostImageService {
     public final static String POST_PATH_PREFIX = "posts/";
 
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     public void uploadImages(Post post, MultipartFile[] images) throws IOException {
         for (MultipartFile image : images) {
-            String imageUrl = s3Service.uploadMultipartFileWithPublicRead(
+            String imageUrl = s3Service.saveImages(
                     POST_PATH_PREFIX + post.getId().toString() + "/",
                     image
             );
 
             PostImage postImage = new PostImage(post, imageUrl);
             postImageRepository.save(postImage);
+        }
+    }
+
+    @Transactional
+    public void deleteImage(Post post, String url) {
+        s3Service.deletePostFile(url);
+        for (PostImage postImage : post.getImages()) {
+            if (postImage.getImageUrl().equals(url)) {
+                post.getImages().remove(postImage);
+                postImageRepository.delete(postImage);
+                break;
+            }
         }
     }
 }
