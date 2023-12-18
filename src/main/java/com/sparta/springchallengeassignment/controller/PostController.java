@@ -21,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static com.sparta.springchallengeassignment.constant.ResponseCode.*;
 
 @Tag(name = "게시글 API", description = "게시글 API")
@@ -91,5 +93,17 @@ public class PostController {
     public ResponseEntity<?> deletePost(@PathVariable Long post_id, @CurrentMember Member member) {
         postService.deletePost(post_id, member);
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.of(DELETE_POST, ""));
+    }
+
+    @Operation(summary = "게시글 전체 조회", description = "게시글 전체 조회 API")
+    @GetMapping
+    public ResponseEntity<?> getPostList(
+            @RequestParam Integer cursor,
+            @RequestParam Integer size,
+            @RequestParam String dir,
+            @RequestParam String keyword
+    ) {
+        List<PostResponse> responses = postService.getPostList(cursor, size, dir, keyword);
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.of(GET_POST_LIST, responses));
     }
 }

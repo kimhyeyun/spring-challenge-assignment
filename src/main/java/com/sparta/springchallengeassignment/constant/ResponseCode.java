@@ -13,6 +13,7 @@ public enum ResponseCode {
     GET_POST_DETAIL(200, "게시글 조회 성공"),
     UPDATE_POST(200, "게시글 수정 성공"),
     DELETE_POST(200, "게시글 삭제 성공"),
+    GET_POST_LIST(200, "게시글 목록 조회 성공"),
 
     SIGN_UP(201, "회원 가입 성공"),
     LOG_IN(201, "로그인 성공"),

@@ -10,10 +10,15 @@ import com.sparta.springchallengeassignment.exception.ApiException;
 import com.sparta.springchallengeassignment.repository.MemberRepository;
 import com.sparta.springchallengeassignment.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static com.sparta.springchallengeassignment.constant.ErrorCode.*;
 
@@ -87,5 +92,14 @@ public class PostService {
 
         postImageService.deleteAll(postId);
         postRepository.deleteById(postId);
+    }
+
+    public List<PostResponse> getPostList(Integer cursor, Integer size, String dir, String keyword) {
+        Sort sort = Sort.by(dir.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, keyword);
+
+        Pageable pageable = PageRequest.of(cursor, size, sort);
+        Page<Post> posts = postRepository.findAll(pageable);
+
+        return posts.stream().map(PostResponse::of).toList();
     }
 }
