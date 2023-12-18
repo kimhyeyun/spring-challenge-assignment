@@ -1,5 +1,6 @@
 package com.sparta.springchallengeassignment.domain;
 
+import com.sparta.springchallengeassignment.dto.request.CommentRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,4 +27,8 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public void update(CommentRequest request) {
+        this.content = request.content();
+    }
 }

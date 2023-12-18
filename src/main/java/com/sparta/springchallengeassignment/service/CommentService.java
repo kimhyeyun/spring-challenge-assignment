@@ -29,4 +29,17 @@ public class CommentService {
 
         return CommentResponse.of(comment);
     }
+
+    @Transactional
+    public CommentResponse updateComment(Long postId, Long commentId, CommentRequest request, Member member) {
+        postRepository.findById(postId).orElseThrow(() -> new ApiException(ErrorCode.POST_NOT_FOUND));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ApiException(ErrorCode.COMMENT_NOT_FOUND));
+
+        if (!comment.getMember().getId().equals(member.getId())) {
+            throw new ApiException(ErrorCode.ACCESS_DENIED);
+        }
+
+        comment.update(request);
+        return CommentResponse.of(comment);
+    }
 }
