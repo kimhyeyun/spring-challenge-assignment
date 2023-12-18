@@ -6,12 +6,13 @@ import lombok.Getter;
 
 import java.util.List;
 
-@Getter
-public class PostUpdateRequest {
+public record PostUpdateRequest(
+        @NotBlank(message = "내용을 입력해주세요")
+        @Size(max = 5000, message = "최대 5000자 까지 작성 가능합니다.")
+         String content,
 
-    @NotBlank(message = "내용을 입력해주세요")
-    @Size(max = 5000, message = "최대 5000자 까지 작성 가능합니다.")
-    private String content;
+        List<String> deleteFileUrl
 
-    private List<String> deleteFileUrl;
+) {
+
 }

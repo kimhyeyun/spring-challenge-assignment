@@ -29,10 +29,18 @@ public class Post extends BaseTimeEntity {
     private List<PostImage> images = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "nickname")
+    @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Comment> comments = new ArrayList<>();
+
     public void update(PostUpdateRequest request) {
-        this.content = request.getContent();
+        this.content = request.content();
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
     }
 }
