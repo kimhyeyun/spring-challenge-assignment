@@ -1,6 +1,7 @@
 package com.sparta.springchallengeassignment.service;
 
 import com.sparta.springchallengeassignment.constant.ErrorCode;
+import com.sparta.springchallengeassignment.domain.Comment;
 import com.sparta.springchallengeassignment.domain.Member;
 import com.sparta.springchallengeassignment.domain.Post;
 import com.sparta.springchallengeassignment.dto.request.PostRequest;
@@ -30,6 +31,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PostImageService postImageService;
+    private final CommentService commentService;
 
     @Transactional
     public PostResponse createPost(PostRequest request, Member member, MultipartFile[] images) {
@@ -88,6 +90,8 @@ public class PostService {
         if (!post.getMember().getId().equals(member.getId())) {
             throw new ApiException(ACCESS_DENIED);
         }
+
+        commentService.deleteComments(postId);
 
         postImageService.deleteAll(postId);
         postRepository.deleteById(postId);

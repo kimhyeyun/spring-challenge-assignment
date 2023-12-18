@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -52,5 +54,13 @@ public class CommentService {
             throw new ApiException(ErrorCode.ACCESS_DENIED);
         }
         return comment;
+    }
+
+    @Transactional
+    public void deleteComments(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ApiException(ErrorCode.POST_NOT_FOUND));
+        List<Comment> comments = post.getComments();
+
+        commentRepository.deleteAll(comments);
     }
 }
