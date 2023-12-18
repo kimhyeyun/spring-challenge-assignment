@@ -10,6 +10,10 @@ import com.sparta.springchallengeassignment.exception.ApiException;
 import com.sparta.springchallengeassignment.repository.CommentRepository;
 import com.sparta.springchallengeassignment.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,5 +66,15 @@ public class CommentService {
         List<Comment> comments = post.getComments();
 
         commentRepository.deleteAll(comments);
+    }
+
+    public List<CommentResponse> getCommentList(Long postId, Integer cursor, Integer size, String dir, String keyword) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ApiException(ErrorCode.POST_NOT_FOUND));
+        Sort sort = Sort.by(dir.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, keyword);
+
+        Pageable pageable = PageRequest.of(cursor, size, sort);
+        Page<Comment> comments = commentRepository.findAllByPost(pageable, post);
+
+        return comments.stream().map(CommentResponse::of).toList();
     }
 }

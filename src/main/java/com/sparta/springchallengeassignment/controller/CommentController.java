@@ -6,6 +6,7 @@ import com.sparta.springchallengeassignment.domain.Member;
 import com.sparta.springchallengeassignment.dto.request.CommentRequest;
 import com.sparta.springchallengeassignment.dto.response.BaseResponse;
 import com.sparta.springchallengeassignment.dto.response.CommentResponse;
+import com.sparta.springchallengeassignment.dto.response.PostResponse;
 import com.sparta.springchallengeassignment.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,6 +19,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static com.sparta.springchallengeassignment.constant.ResponseCode.GET_COMMENT_LIST_BY_POST;
+import static com.sparta.springchallengeassignment.constant.ResponseCode.GET_POST_LIST;
 
 @Tag(name = "댓글 API", description = "댓글 API")
 @RestController
@@ -65,5 +71,18 @@ public class CommentController {
     public ResponseEntity<?> deleteComment(@PathVariable Long post_id, @PathVariable Long comment_id, @CurrentMember Member member) {
         commentService.deleteComment(post_id, comment_id, member);
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.of(ResponseCode.DELETE_COMMENT, ""));
+    }
+
+    @Operation(summary = "댓글 전체 조회", description = "댓글 전체 조회 API")
+    @GetMapping
+    public ResponseEntity<?> getCommentList(
+            @PathVariable Long post_id,
+            @RequestParam Integer cursor,
+            @RequestParam Integer size,
+            @RequestParam String dir,
+            @RequestParam String keyword
+    ) {
+        List<CommentResponse> responses = commentService.getCommentList(post_id, cursor, size, dir, keyword);
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.of(GET_COMMENT_LIST_BY_POST, responses));
     }
 }
