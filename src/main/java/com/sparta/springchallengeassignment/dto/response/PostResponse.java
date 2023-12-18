@@ -1,5 +1,6 @@
 package com.sparta.springchallengeassignment.dto.response;
 
+import com.sparta.springchallengeassignment.domain.Comment;
 import com.sparta.springchallengeassignment.domain.Post;
 import com.sparta.springchallengeassignment.domain.PostImage;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,10 +18,11 @@ public record PostResponse (
         @Schema(description = "작성자 아이디", example = "username1")
         String nickname,
         List<String> imageUrls,
+        List<CommentResponse> comments,
         LocalDateTime createdAt
 ) {
 
     public static PostResponse of(Post post) {
-        return new PostResponse(post.getId(), post.getTitle(), post.getContent(), post.getMember().getNickname(), post.getImages().stream().map(PostImage::getImageUrl).toList(), post.getCreatedAt());
+        return new PostResponse(post.getId(), post.getTitle(), post.getContent(), post.getMember().getNickname(), post.getImages().stream().map(PostImage::getImageUrl).toList(), post.getComments().stream().map(CommentResponse::of).toList(), post.getCreatedAt());
     }
 }

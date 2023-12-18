@@ -18,6 +18,7 @@ public enum ResponseCode {
     SIGN_UP(201, "회원 가입 성공"),
     LOG_IN(201, "로그인 성공"),
     CREATED_POST(201, "게시글 작성 성공"),
+    CREATED_COMMENT(201, "댓글 작성 성공"),
     REISSUE_REFRESH_TOKEN(201, "리프레쉬 토큰 재발급 성공");
 
 

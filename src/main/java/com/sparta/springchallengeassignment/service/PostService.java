@@ -29,7 +29,6 @@ public class PostService {
     private final static short MAX_IMAGES = 4;
 
     private final PostRepository postRepository;
-    private final MemberRepository memberRepository;
     private final PostImageService postImageService;
 
     @Transactional
@@ -60,7 +59,7 @@ public class PostService {
             throw new ApiException(ACCESS_DENIED);
         }
 
-        if (post.getImages().size() + images.length - request.getDeleteFileUrl().size() > MAX_IMAGES) {
+        if (post.getImages().size() + images.length - request.deleteFileUrl().size() > MAX_IMAGES) {
             throw new ApiException(MAX_IMAGES_LIMIT_OVER);
         }
 
@@ -73,7 +72,7 @@ public class PostService {
         }
 
         try {
-            for (String url : request.getDeleteFileUrl()) {
+            for (String url : request.deleteFileUrl()) {
                 postImageService.deleteImage(post, url);
             }
         } catch (Exception e) {
@@ -112,4 +111,5 @@ public class PostService {
         postImageService.deleteAll(post.getId());
         postRepository.deleteById(post.getId());
     }
+
 }
