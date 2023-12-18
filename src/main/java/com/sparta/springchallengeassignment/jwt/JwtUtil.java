@@ -79,7 +79,7 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             logger.error("Invalid JWT Signature, 유효하지 않는 JWT 서명입니다.");
@@ -94,10 +94,10 @@ public class JwtUtil {
     }
 
     public Claims getUserInfoFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-    public String getTokenFromrRequestHeader(HttpServletRequest request) {
+    public String getTokenFromRequestHeader(HttpServletRequest request) {
         String token = request.getHeader(AUTHORIZATION_HEADER);
         if (!StringUtils.hasText(token)) {
             return null;
