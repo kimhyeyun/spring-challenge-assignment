@@ -1,9 +1,9 @@
 package com.sparta.springchallengeassignment.advice;
 
 
-import com.sparta.springchallengeassignment.dto.response.ErrorResponse;
+import com.sparta.springchallengeassignment.dto.response.BaseResponse;
 import com.sparta.springchallengeassignment.exception.ApiException;
-import com.sparta.springchallengeassignment.exception.ErrorCode;
+import com.sparta.springchallengeassignment.constant.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.sparta.springchallengeassignment.exception.ErrorCode.INTERNAL_SERVER_ERROR;
-import static com.sparta.springchallengeassignment.exception.ErrorCode.INVALID_VALUE;
+import static com.sparta.springchallengeassignment.constant.ErrorCode.INTERNAL_SERVER_ERROR;
+import static com.sparta.springchallengeassignment.constant.ErrorCode.INVALID_VALUE;
 
 @Slf4j
 @RestControllerAdvice
@@ -36,15 +36,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @return ResponseEntity<ErrorResponse>
      * */
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> runtimeExceptionHandler(RuntimeException exception) {
+    public ResponseEntity<BaseResponse> runtimeExceptionHandler(RuntimeException exception) {
         log.error("Runtime Exceptions: ", exception);
         return ResponseEntity.status(INTERNAL_SERVER_ERROR.getHttpStatus()).body(
-                ErrorResponse.builder()
-                        .status(INTERNAL_SERVER_ERROR.getHttpStatus().value())
-                        .name(INTERNAL_SERVER_ERROR.name())
-                        .message(INTERNAL_SERVER_ERROR.getDetail())
-                        .build()
-        );
+                BaseResponse.of(
+                        INTERNAL_SERVER_ERROR.getDetail(),
+                        INTERNAL_SERVER_ERROR.getHttpStatus().value(),
+                        null
+                ));
     }
 
     /*
@@ -62,12 +61,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         bindingResult.getAllErrors().forEach(error -> errors.put(((FieldError) error).getField(), error.getDefaultMessage()));
 
         return ResponseEntity.status(INVALID_VALUE.getHttpStatus()).body(
-                ErrorResponse.builder()
-                        .status(INVALID_VALUE.getHttpStatus().value())
-                        .name(INVALID_VALUE.name())
-                        .message(INVALID_VALUE.getDetail())
-                        .data(errors)
-                        .build()
+                BaseResponse.of(
+                        INVALID_VALUE.getDetail(),
+                        INVALID_VALUE.getHttpStatus().value(),
+                        errors
+                )
         );
     }
 
@@ -81,12 +79,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                ErrorResponse.builder()
-                        .status(INVALID_VALUE.getHttpStatus().value())
-                        .name(HttpStatus.BAD_REQUEST.name())
-                        .message("잘못된 요청입니다." + "누락된 파라미터: " + ex.getParameterName())
-                        .build()
-        );
+                BaseResponse.of(
+                        "잘못된 요청입니다." + "누락된 파라미터: " + ex.getParameterName(),
+                        INVALID_VALUE.getHttpStatus().value(),
+                        null
+
+                ));
     }
 
     /*
@@ -106,11 +104,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         log.error("handlerCustomException throw CustomException : {}", errorCode);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(
-                ErrorResponse.builder()
-                        .status(errorCode.getHttpStatus().value())
-                        .name(errorCode.name())
-                        .message(message)
-                        .build()
+                BaseResponse.of(
+                        ex.getErrorCode().getDetail(),
+                        ex.getErrorCode().getHttpStatus().value(),
+                        null
+                )
         );
     }
+
 }

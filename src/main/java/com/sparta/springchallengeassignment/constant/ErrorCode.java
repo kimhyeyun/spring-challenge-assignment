@@ -1,4 +1,4 @@
-package com.sparta.springchallengeassignment.exception;
+package com.sparta.springchallengeassignment.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +19,9 @@ public enum ErrorCode {
     MISMATCH_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰의 유저 정보가 일치하지 않습니다."),
     INVALID_EMAIL_VERIFY_AUTH_KEY(BAD_REQUEST, "이메일 인증 번호가 일치하지 않습니다."),
     TIME_OUT_EMAIL_VERIFY(BAD_REQUEST, "이메일 인증 시간이 초과했습니다."),
+    MAX_IMAGES_LIMIT_OVER(BAD_REQUEST, "등록할 이미지 개수가 최대 개수를 초과했습니다."),
+    INVALID_POST_FILE_URL(BAD_REQUEST, "잘못된 이미지 URL 입니다."),
+    CAN_NOT_READ_IMAGE(BAD_REQUEST, "이미지를 처리할 수 없습니다."),
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자*/
     INVALID_AUTH_TOKEN(UNAUTHORIZED,"인증 정보가 없는 토큰입니다."),
@@ -32,6 +35,7 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다."),
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "로그아웃 된 사용자입니다."),
     VALUE_NOT_FOUND(NOT_FOUND, "요청한 값을 찾을 수 없습니다."),
+    POST_NOT_FOUND(NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌, 보통 중복된 데이터 존재 */
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다."),
