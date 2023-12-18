@@ -22,14 +22,14 @@ public enum ErrorCode {
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자*/
     INVALID_AUTH_TOKEN(UNAUTHORIZED,"인증 정보가 없는 토큰입니다."),
-    UNAUTHORIZED_USER(UNAUTHORIZED,"회원 인증 정보가 존재하지 않습니다."),
+    UNAUTHORIZED_MEMBER(UNAUTHORIZED,"회원 인증 정보가 존재하지 않습니다."),
     BAD_CREDENTIAL(UNAUTHORIZED,"인증 정보가 일치하지 않습니다."),
 
     /* 403 FORBIDDEN : 권한, 자원이 없음*/
     ACCESS_DENIED(FORBIDDEN, "권한이 없습니다."),
 
     /* 404 NOT_FOUND : Resource 를 찾을 수 없음 */
-    USER_NOT_FOUND(NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다."),
+    MEMBER_NOT_FOUND(NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다."),
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "로그아웃 된 사용자입니다."),
     VALUE_NOT_FOUND(NOT_FOUND, "요청한 값을 찾을 수 없습니다."),
 
