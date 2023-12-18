@@ -41,15 +41,29 @@ public class CommentController {
 
     @Operation(summary = "댓글 수정", description = "댓글 수정 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "댓글 수정 성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "200", description = "댓글 수정 성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "403", description = "권한 없음", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "400", description = "댓글 수정 실패 - 수정자와 작성자가 다름", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "404", description = "댓글 수정 실패 - 없는 게시글", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "404", description = "댓글 수정 실패 - 없는 댓글", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
     })
     @PutMapping("/{comment_id}")
-    public ResponseEntity<?> updateComment(@PathVariable Long post_id,@PathVariable Long comment_id, @Valid @RequestBody CommentRequest request, @CurrentMember Member member) {
+    public ResponseEntity<?> updateComment(@PathVariable Long post_id, @PathVariable Long comment_id, @Valid @RequestBody CommentRequest request, @CurrentMember Member member) {
         CommentResponse response = commentService.updateComment(post_id, comment_id, request, member);
-        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.of(ResponseCode.UPDAT, response));
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.of(ResponseCode.UPDATE_COMMENT, response));
+    }
+
+    @Operation(summary = "댓글 삭제", description = "댓글 삭제 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "댓글 삭제 성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "400", description = "댓글 삭제 실패 - 삭제자와 작성자가 다름", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "댓글 삭제 실패 - 없는 게시글", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "댓글 삭제 실패 - 없는 댓글", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+    })
+    @DeleteMapping("/{comment_id}")
+    public ResponseEntity<?> deleteComment(@PathVariable Long post_id, @PathVariable Long comment_id, @CurrentMember Member member) {
+        commentService.deleteComment(post_id, comment_id, member);
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.of(ResponseCode.DELETE_COMMENT, ""));
     }
 }
