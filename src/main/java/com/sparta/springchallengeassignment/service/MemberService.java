@@ -98,4 +98,8 @@ public class MemberService {
             throw new InvalidEmailVerify();
         }
     }
+
+    public Member findMember(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(NotFoundMember::new);
+    }
 }
