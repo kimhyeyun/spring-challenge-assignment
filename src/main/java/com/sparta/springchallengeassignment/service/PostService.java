@@ -116,4 +116,7 @@ public class PostService {
         postRepository.deleteById(post.getId());
     }
 
+    public Post findPost(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new ApiException(POST_NOT_FOUND));
+    }
 }

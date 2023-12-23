@@ -42,6 +42,8 @@ public enum ErrorCode {
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다."),
     ALREADY_EXIST_MEMBER_NICKNAME(CONFLICT, "중복된 닉네임입니다."),
     ALREADY_EXIST_MEMBER_EMAIL(CONFLICT, "중복된 이메일입니다."),
+    ALREADY_EXIST_LIKE(CONFLICT, "이미 좋아요 한 게시글 입니다."),
+    NON_EXIST_LIKE(CONFLICT, "좋아요 등록되지 않은 게시글 입니다."),
 
     /* 500 INTERNAL_SERVER_ERROR : 서버 에러*/
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 에러입니다.");

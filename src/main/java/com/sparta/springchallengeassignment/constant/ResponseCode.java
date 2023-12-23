@@ -17,11 +17,14 @@ public enum ResponseCode {
     UPDATE_COMMENT(200, "댓글 수정 성공"),
     DELETE_COMMENT(200, "댓글 삭제 성공"),
     GET_COMMENT_LIST_BY_POST(200, "댓글 목록 조회 성공"),
+    DELETE_LIKE(200, "좋아요 취소 성공"),
+    GET_LIKE_LIST_BY_MEMBER(200, "해당 사용자의 좋아요 리스트 조회 성공"),
 
     SIGN_UP(201, "회원 가입 성공"),
     LOG_IN(201, "로그인 성공"),
     CREATED_POST(201, "게시글 작성 성공"),
     CREATED_COMMENT(201, "댓글 작성 성공"),
+    CREATED_LIKE(201, "좋아요 성공"),
     REISSUE_REFRESH_TOKEN(201, "리프레쉬 토큰 재발급 성공");
 
 
